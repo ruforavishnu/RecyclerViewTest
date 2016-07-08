@@ -1,6 +1,7 @@
 package com.efgh.recyclerviewtest;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -93,6 +96,33 @@ public class MainActivity extends AppCompatActivity {
                     if(action == MotionEvent.ACTION_DOWN)
                     {
                         Log.i("logtest","recyclerview was  touched");
+
+                        ViewGroup group = (ViewGroup)v;
+                        ViewGroup layoutGroup = (ViewGroup)group.getChildAt(0);
+
+                        Log.i("logtest","ViewGroup name:"+layoutGroup.getClass().getName());
+
+                        for(int i = 0; i < layoutGroup.getChildCount(); i++)
+                        {
+                            View childView = (View)layoutGroup.getChildAt(i);
+                            Log.i("logtest","view name:"+childView.getClass().getName());
+                            if(childView.getClass().getName().endsWith("TextView"))
+                            {
+
+                                if(childView.getTag()!=null)
+                                {
+                                    Log.i("logtest", "tag:" + childView.getTag());
+                                    MyTag tag = (MyTag)childView.getTag();
+                                    Log.i("logtest", "tag:" + tag.getMp3FilePath());
+
+                                    //MediaPlayer
+
+                                }
+
+
+                            }
+                        }
+
 
                     }
                     return false;

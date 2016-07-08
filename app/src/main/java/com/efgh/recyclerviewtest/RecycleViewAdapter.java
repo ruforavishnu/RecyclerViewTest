@@ -113,7 +113,9 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             holder.txtFooter.setText(metaData.getAlbumName());
             holder.txtHeader.setSelected(true);
             MyTag pathTag = new MyTag(mDataset.get(position));
+            Log.i("logtest", "mDataset.get(position):" + mDataset.get(position));
             holder.txtHeader.setTag(pathTag);
+
 
 
 
