@@ -2,6 +2,7 @@ package com.efgh.recyclerviewtest;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private MediaPlayer mp3Player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +90,53 @@ public class MainActivity extends AppCompatActivity {
             mAdapter = new RecycleViewAdapter(mp3FileNamesList, getApplicationContext());
             recyclerView.setAdapter(mAdapter);
 
-            recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            recyclerView.addOnItemTouchListener(
+                    new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position)
+                        {
+                            Log.i("logtest", "recyclerview was  touched at position:" + position);
+
+                            Log.i("logtest","view name:"+view.getClass().getName());
+                            ViewGroup group = (ViewGroup)view;
+
+
+                            for(int i = 0; i < group.getChildCount(); i++)
+                            {
+                                View childView = (View)group.getChildAt(i);
+                                Log.i("logtest","view name:"+childView.getClass().getName());
+
+                                if(childView.getClass().getName().endsWith("TextView"))
+                                {
+
+                                    if(childView.getTag()!=null)
+                                    {
+                                        if(mp3Player!=null && mp3Player.isPlaying())
+                                        {
+                                            mp3Player.stop();
+                                            mp3Player = null;
+
+                                        }
+                                        Log.i("logtest", "tag:" + childView.getTag());
+                                        MyTag tag = (MyTag)childView.getTag();
+                                        Log.i("logtest", "tag:" + tag.getMp3FilePath());
+                                        Uri songUri = Uri.parse(tag.getMp3FilePath());
+
+                                        mp3Player= MediaPlayer.create(getApplicationContext(),songUri);
+                                        mp3Player.start();
+
+
+                                    }
+
+
+                                }
+                            }
+                            // TODO Handle item click
+                        }
+                    })
+            );
+
+           /* recyclerView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event)
                 {
@@ -97,37 +145,21 @@ public class MainActivity extends AppCompatActivity {
                     {
                         Log.i("logtest","recyclerview was  touched");
 
+
+
+
                         ViewGroup group = (ViewGroup)v;
                         ViewGroup layoutGroup = (ViewGroup)group.getChildAt(0);
 
                         Log.i("logtest","ViewGroup name:"+layoutGroup.getClass().getName());
 
-                        for(int i = 0; i < layoutGroup.getChildCount(); i++)
-                        {
-                            View childView = (View)layoutGroup.getChildAt(i);
-                            Log.i("logtest","view name:"+childView.getClass().getName());
-                            if(childView.getClass().getName().endsWith("TextView"))
-                            {
 
-                                if(childView.getTag()!=null)
-                                {
-                                    Log.i("logtest", "tag:" + childView.getTag());
-                                    MyTag tag = (MyTag)childView.getTag();
-                                    Log.i("logtest", "tag:" + tag.getMp3FilePath());
-
-                                    //MediaPlayer
-
-                                }
-
-
-                            }
-                        }
 
 
                     }
                     return false;
                 }
-            });
+            });*/
 
 
 
