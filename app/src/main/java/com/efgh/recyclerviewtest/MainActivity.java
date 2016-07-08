@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -82,6 +84,20 @@ public class MainActivity extends AppCompatActivity {
 
             mAdapter = new RecycleViewAdapter(mp3FileNamesList, getApplicationContext());
             recyclerView.setAdapter(mAdapter);
+
+            recyclerView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event)
+                {
+                    int action = event.getAction();
+                    if(action == MotionEvent.ACTION_DOWN)
+                    {
+                        Log.i("logtest","recyclerview was  touched");
+
+                    }
+                    return false;
+                }
+            });
 
 
 
